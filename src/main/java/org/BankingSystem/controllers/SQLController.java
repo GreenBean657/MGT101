@@ -3,48 +3,109 @@ package org.BankingSystem.controllers;
 import org.BankingSystem.models.Human;
 
 import java.sql.*;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQLController {
 
     private static final String path = "jdbc:sqlite:mainDB.sqlite";
-
     private static Connection conn = null;
 
-
     public static void loadDB() {
-        System.out.println("TRYING");
+        System.out.println("Connecting to database...");
         try {
-           conn = DriverManager.getConnection(path);
-
-           Statement stmt = conn.createStatement();
-           //String query = "INSERT INTO users (name) VALUES ('John')";
-           //stmt.executeUpdate(query);
-            //PreparedStatement pstmt = conn.prepareStatement(query);
-            //pstmt.executeUpdate();
-            //System.out.println("DONE");
-
+            conn = DriverManager.getConnection(path);
+            System.out.println("Database connection established successfully");
         } catch (SQLException exception) {
-           System.out.println(exception.getMessage());
+            System.out.println("Database connection error: " + exception.getMessage());
         }
     }
 
-    public static void write(Human human) {
+    /**
+     * Load all humans from the database
+     * @return Array of Human objects
+     */
+    public static Human[] loadAll() {
+        String query = "SELECT * FROM users";
+        List<Human> humans = new ArrayList<>();
 
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                float balance = rs.getFloat("balance");
+                String password = rs.getString("password");
+                String financialHistory = rs.getString("history");
+                String setGoals = rs.getString("setGoals");
+
+                String[] adjHistory = financialHistory.split("`");
+                String[] adjGoals = setGoals.split("`");
+
+                Human human = new Human(id, name, balance, password, adjHistory, adjGoals);
+                humans.add(human);
+            }
+
+            System.out.println("Loaded " + humans.size() + " users from database");
+            return humans.toArray(new Human[0]);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error loading all users", e);
+        }
+    }
+
+    public static Human load(int position) {
+        // Ensure consistent table name (changed from "Human" to "users" to match write method)
+        String query = "SELECT * FROM users WHERE id = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, position);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    // Extract data from the result set
+                    String name = rs.getString("name");
+                    float balance = rs.getFloat("balance");
+                    String password = rs.getString("password");
+                    String financialHistory = rs.getString("history");
+                    // Ensure consistent field name (changed from "setgoals" to "setGoals")
+                    String setGoals = rs.getString("setGoals");
+                    int thisposition = rs.getInt("id"); // Changed from "position" to "id" to match query
+
+                    String[] adjHistory = financialHistory.split("`");
+                    String[] adjGoals = setGoals.split("`");
+
+                    return new Human(thisposition, name, balance, password, adjHistory, adjGoals);
+                } else {
+                    System.out.println("No user found with ID: " + position);
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error loading user with ID: " + position, e);
+        }
+    }
+
+    /**
+     * Write a human class to the database
+     * @param human The human class
+     */
+    public static void write(Human human) {
         Object[][] data = human.getData();
         int position;
         float balance;
         String name;
         String password;
-
         String[] history;
         String[] setGoals;
+
         try {
             position = (int) data[0][0];
             balance = (float) data[0][1];
             name = (String) data[0][2];
             password = (String) data[0][3];
-
             history = (String[]) data[1];
             setGoals = (String[]) data[2];
         } catch (ArrayIndexOutOfBoundsException exception) {
@@ -59,47 +120,70 @@ public class SQLController {
         if (history == null || history.length == 0) history = new String[]{"No history provided."};
         if (setGoals == null || setGoals.length == 0) setGoals = new String[]{"No set goals provided."};
 
-        RunAndReplace(history);
-        RunAndReplace(setGoals);
+        // Fix character replacement in arrays
+        sanitizeBackticks(history);
+        sanitizeBackticks(setGoals);
 
-        StringBuilder builder = new StringBuilder();
+        // Join history array elements with backtick delimiter
+        StringBuilder historyBuilder = new StringBuilder();
         for (String s : history) {
-            builder.append(s).append('`');
+            historyBuilder.append(s).append('`');
         }
+        String finalHistory = historyBuilder.toString();
 
-        String finalHistory = builder.toString();
-        builder = new StringBuilder();
-
+        // Join setGoals array elements with backtick delimiter
+        StringBuilder goalsBuilder = new StringBuilder();
         for (String s : setGoals) {
-            builder.append(s);
+            goalsBuilder.append(s).append('`');
         }
-
-        String finalSetGoals = builder.toString();
+        String finalSetGoals = goalsBuilder.toString();
 
         String query = "UPDATE users SET name = ?, balance = ?, password = ?, history = ?, setGoals = ? WHERE id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, name);               // Set name
-            pstmt.setFloat(2, balance);             // Set balance
-            pstmt.setString(3, password);           // Set password
-            pstmt.setString(4, finalHistory);       // Set history
-            pstmt.setString(5, finalSetGoals);      // Set setGoals
-            pstmt.setInt(6, position);              // Set position
+            pstmt.setString(1, name);
+            pstmt.setFloat(2, balance);
+            pstmt.setString(3, password);
+            pstmt.setString(4, finalHistory);
+            pstmt.setString(5, finalSetGoals);
+            pstmt.setInt(6, position);
 
-            pstmt.executeUpdate(); // Execute the update
+            int rowsAffected = pstmt.executeUpdate();
+            if (rowsAffected == 0) {
+                // No rows updated, might need to insert instead
+                insertNewUser(name, balance, password, finalHistory, finalSetGoals, position);
+            }
         } catch (SQLException exception) {
-            exception.printStackTrace(); // Handle SQL exceptions
+            exception.printStackTrace();
+            throw new RuntimeException("Error updating user with ID: " + position, exception);
         }
     }
 
-    private static void RunAndReplace(String[] object) {
-        for (int i = 0; i < object.length; i++) {
-            for (int j = 0; j < object[i].length(); j++) {
-                if (object[i].charAt(j) == '`') {
-                    object[i] = String.valueOf(';');
-                }
+    private static void insertNewUser(String name, float balance, String password,
+                                      String history, String setGoals, int position) {
+        String query = "INSERT INTO users (id, name, balance, password, history, setGoals) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setInt(1, position);
+            pstmt.setString(2, name);
+            pstmt.setFloat(3, balance);
+            pstmt.setString(4, password);
+            pstmt.setString(5, history);
+            pstmt.setString(6, setGoals);
+            pstmt.executeUpdate();
+            System.out.println("New user inserted with ID: " + position);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            throw new RuntimeException("Error inserting new user with ID: " + position, exception);
+        }
+    }
+
+    private static void sanitizeBackticks(String[] array) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != null) {
+                // Replace backticks with semicolons
+                array[i] = array[i].replace('`', ';');
             }
         }
     }
-
 }
