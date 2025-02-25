@@ -5,6 +5,12 @@ import java.util.HashMap;
 public class UserLoginController {
     private static HashMap<String, String> users = new HashMap<>();
 
+    //TODO make it so the username and passwords are stored into the database
+    // and make it so they are re added to the HashMap when the application is ran
+
+
+
+
     public boolean registerUser(String username) {
 
         if (username.isBlank()) {

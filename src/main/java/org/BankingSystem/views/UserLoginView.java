@@ -39,30 +39,30 @@ public class UserLoginView {
         String username;
         String password;
 
-        do {
-            System.out.println("Enter your Username: ");
-            username = scanner.nextLine();
+            do {
+                System.out.println("Enter your Username: ");
+                username = scanner.nextLine();
 
-            if (!controller.registerUser(username)) {
-                System.out.println("Username is already in use. Please try again.");
+                if (!controller.registerUser(username)) {
+                    System.out.println("Username is already in use. Please try again.");
 
-            } else {
-                System.out.println("Username is registered successfully.");
-                break;
-            }
-        } while (true);
+                } else {
+                    System.out.println("Username is registered successfully.");
+                    break;
+                }
+            } while (true);
 
-        do {
-            System.out.println("Enter your Password: ");
-            password = scanner.nextLine();
+            do {
+                System.out.println("Enter your Password: ");
+                password = scanner.nextLine();
 
-            if (!controller.registerPassword(password)) {
-                System.out.println("Password is less then 3 digits, please try again.");
-            } else {
-                System.out.println("Password is valid.");
-                break;
-            }
-        } while (true);
+                if (!controller.registerPassword(password)) {
+                    System.out.println("Password is less then 3 digits, please try again.");
+                } else {
+                    System.out.println("Password is valid.");
+                    break;
+                }
+            } while (true);
 
         System.out.println("You are now registered successfully, please login.");
         controller.register(username, password);
@@ -71,9 +71,4 @@ public class UserLoginView {
 
 
     }
-
-
-
-
-
 }
