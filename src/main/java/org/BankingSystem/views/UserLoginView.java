@@ -8,6 +8,7 @@ public class UserLoginView {
 
     private static Scanner scanner = new Scanner(System.in);
     static UserLoginController controller = new UserLoginController();
+    static UserMenuView view = new UserMenuView();
 
     public static void loginScreen() {
         while (true) {
@@ -75,6 +76,7 @@ public class UserLoginView {
 
     private static void login() {
 
+        //TODO Need to add features after you login
 
         String username;
 
@@ -97,10 +99,15 @@ public class UserLoginView {
             if (!controller.login(username, password)) {
                 System.out.println("Invalid password. Please try again.");
             }else {
-                System.out.println("You are now logged in successfully.");
+                System.out.println("You are now logged in successfully. \n " +
+                        "Sending you to your banking account now");
+
                 break;
             }
         }
         while (true);
+
+        view.userMenu();
+
     }
 }
