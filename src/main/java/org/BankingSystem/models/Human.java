@@ -18,6 +18,10 @@ public class Human {
         this.setGoals = setGoals;
     }
 
+    public String[] getLogin() {
+        return new String[]{name, password};
+    }
+
     public Object[][] getData() {
         return new Object[][]{
                 {position,balance, name, password},

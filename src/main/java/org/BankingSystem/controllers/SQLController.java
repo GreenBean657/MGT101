@@ -159,7 +159,7 @@ public class SQLController {
         }
     }
 
-    private static void insertNewUser(String name, float balance, String password,
+    public static void insertNewUser(String name, float balance, String password,
                                       String history, String setGoals, int position) {
         String query = "INSERT INTO users (id, name, balance, password, history, setGoals) VALUES (?, ?, ?, ?, ?, ?)";
 
