@@ -25,6 +25,7 @@ public class UserLoginView {
                     register();
                     break;
                 case 2:
+                    login();
                     break;
                 case 3:
                     System.out.println("Exiting program. Goodbye!");
@@ -70,5 +71,36 @@ public class UserLoginView {
 
 
 
+    }
+
+    private static void login() {
+
+
+        String username;
+
+        do {
+            System.out.println("Enter your Username: ");
+            username = scanner.nextLine();
+
+            if (!controller.loginUsername(username)) {
+                System.out.println("This username cannot be found. Please try again.");
+            }else {
+                System.out.println("Username was found successfully.");
+                break;
+            }
+        }
+        while (true);
+
+        do {
+            System.out.println("Enter your Password: ");
+            String password = scanner.nextLine();
+            if (!controller.login(username, password)) {
+                System.out.println("Invalid password. Please try again.");
+            }else {
+                System.out.println("You are now logged in successfully.");
+                break;
+            }
+        }
+        while (true);
     }
 }
