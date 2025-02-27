@@ -41,4 +41,12 @@ public class UserLoginController {
         SQLController.insertNewUser(username, 0, password, "No history provided.", "No set goals provided.", SQLController.loadAll().length+1);
 
     }
+
+    public boolean loginUsername(String username) {
+        if (users.containsKey(username)) {
+            return true;
+        }else {
+            return false;
+        }
+    }
 }
