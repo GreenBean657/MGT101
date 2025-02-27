@@ -18,6 +18,7 @@ public class UserLoginController {
     }
 
 
+
     public boolean registerUser(String username) {
 
         if (username.isBlank()) {
@@ -43,14 +44,6 @@ public class UserLoginController {
 
     public boolean loginUsername(String username) {
         if (users.containsKey(username)) {
-            return true;
-        }else {
-            return false;
-        }
-    }
-
-    public boolean login(String username, String password) {
-        if (users.get(username).equals(password)) {
             return true;
         }else {
             return false;
