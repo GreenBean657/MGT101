@@ -49,4 +49,16 @@ public class UserLoginController {
             return false;
         }
     }
+
+    public boolean login(String username, String password) {
+
+        if (!users.containsKey(username)) {
+            return false;
+        } else {
+            if (password.equals(users.get(username))) {
+                return true;
+            }else
+                return false;
+        }
+    }
 }
