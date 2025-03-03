@@ -1,10 +1,13 @@
 package org.BankingSystem.models;
 
+import static org.BankingSystem.models.TypeOfTransaction.OTHER;
+
 public class Human {
     int position;
     String name;
     float balance;
     String password;
+    TransactionHistory[] transHistory = new TransactionHistory[5];
     String[] history;
     String[] setGoals;
 
@@ -28,5 +31,17 @@ public class Human {
                 history,
                 setGoals
         };
+    }
+    public void historyTemplate(){
+        for (int i = 0; i < transHistory.length; i++) {
+            transHistory[i] = new TransactionHistory("Filler","1/1/20XX", 9.99f, OTHER);
+            balance = balance - transHistory[i].amount;
+        }
+        for (int i = 0; i < 5; i++) {
+            if(history[i] == null) {
+                history[i] = transHistory[i].toString();
+            }
+            System.out.println(history[i]);
+        }
     }
 }
