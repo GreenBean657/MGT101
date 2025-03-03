@@ -92,22 +92,21 @@ public class UserLoginView {
             }
         }
         while (true);
-
+        String password;
         do {
             System.out.println("Enter your Password: ");
-            String password = scanner.nextLine();
+            password = scanner.nextLine();
             if (!controller.login(username, password)) {
                 System.out.println("Invalid password. Please try again.");
             }else {
                 System.out.println("You are now logged in successfully. \n " +
                         "Sending you to your banking account now");
-
                 break;
             }
         }
         while (true);
 
-        view.userMenu();
+        new UserMenuView().userMenu(username, password);
 
     }
 }
