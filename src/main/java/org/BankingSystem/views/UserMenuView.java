@@ -6,6 +6,7 @@ import org.BankingSystem.models.Human;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class UserMenuView {
 
@@ -27,6 +28,7 @@ public class UserMenuView {
 
         BufferedReader bReader = new BufferedReader(new java.io.InputStreamReader(System.in));
         do {
+            Scanner menuChoice = new Scanner(System.in);
 
             System.out.println("-------Welcome to Banking System Menu------- \n "
                     + "--Please Select The Action you want to do-- \n" +
@@ -39,6 +41,23 @@ public class UserMenuView {
                     "-- 4. Log Out ");
             //TODO Logs them out and puts them back into the register/login screen
 
+            switch (menuChoice.nextInt()) {
+                case 1:
+
+                    break; case 2:
+
+                        break;
+                        case 3:
+                            Scanner amtToAdd = new Scanner(System.in);
+                            float balance = loadedHuman.getBalance();
+                            System.out.print("Enter the amount you want to add as a decimal: ");
+                            float newBalance = balance + amtToAdd.nextFloat();
+                            loadedHuman.setBalance(newBalance);
+                            break;
+                    default:
+                        System.out.println("Invalid choice");
+                        break;
+            }
 
             try {
                 String line =  bReader.readLine();
@@ -51,7 +70,7 @@ public class UserMenuView {
                         System.exit(0);
                     }
                 }
-            } catch (NumberFormatException | IOException ignored) {};
+            } catch (NumberFormatException | IOException ignored) {}
 
         } while (true);
     }

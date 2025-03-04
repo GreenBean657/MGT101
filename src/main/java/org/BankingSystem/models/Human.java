@@ -18,6 +18,7 @@ public class Human {
         this.balance = balance;
         this.password = password;
         this.history = history;
+        historyTemplate();
         this.setGoals = setGoals;
     }
 
@@ -43,5 +44,10 @@ public class Human {
             }
             System.out.println(history[i]);
         }
+    }
+
+    public float getBalance() { return balance; }
+    public void setBalance(float balance) {
+        this.balance = balance;
     }
 }
