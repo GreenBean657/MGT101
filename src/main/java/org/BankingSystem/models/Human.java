@@ -44,4 +44,14 @@ public class Human {
             System.out.println(history[i]);
         }
     }
+
+    public String[] getGoals() {
+        return this.setGoals;
+    }
+
+    public void setGoals(String[] setGoals) {
+        this.setGoals = setGoals;
+    }
+
+
 }

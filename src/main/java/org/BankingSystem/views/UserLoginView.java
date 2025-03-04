@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class UserLoginView {
 
-    private static Scanner scanner = new Scanner(System.in);
+    static Scanner scanner = new Scanner(System.in);
     static UserLoginController controller = new UserLoginController();
     static UserMenuView view = new UserMenuView();
 

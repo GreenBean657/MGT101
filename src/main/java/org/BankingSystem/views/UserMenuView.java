@@ -44,6 +44,9 @@ public class UserMenuView {
                 String line =  bReader.readLine();
                 int choice = Integer.parseInt(line);
                 switch (choice) {
+                    case (2) -> {
+                        UserGoalView.goalSet(loadedHuman);
+                    }
                     case (4) -> {
                         System.out.println("Exiting program. Goodbye!");
                         assert loadedHuman != null;

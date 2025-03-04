@@ -4,6 +4,8 @@ import org.BankingSystem.controllers.MainController;
 
 public class Main {
     //TODO SCRUM!!
+
+    //TODO Developer dude nathaniel works on interest today
     /*
      * STOP - STOP - STOP    *
      * NO CODE GOES IN MAIN! *
