@@ -49,6 +49,7 @@ public class UserMenuView {
                         break;
                         case 3:
                             Scanner amtToAdd = new Scanner(System.in);
+                            assert loadedHuman != null;
                             float balance = loadedHuman.getBalance();
                             System.out.print("Enter the amount you want to add as a decimal: ");
                             float newBalance = balance + amtToAdd.nextFloat();
@@ -64,6 +65,7 @@ public class UserMenuView {
                 int choice = Integer.parseInt(line);
                 switch (choice) {
                     case (2) -> {
+                        assert loadedHuman != null;
                         UserGoalView.goalSet(loadedHuman);
                     }
                     case (4) -> {

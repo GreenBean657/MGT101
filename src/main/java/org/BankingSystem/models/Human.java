@@ -55,4 +55,11 @@ public class Human {
     }
 
 
+    public float getBalance() {
+        return this.balance;
+    }
+
+    public void setBalance(float balance) {
+        this.balance = balance;
+    }
 }
