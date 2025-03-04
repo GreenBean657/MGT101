@@ -28,7 +28,7 @@ public class Human {
 
     public Object[][] getData() {
         return new Object[][]{
-                {position,balance, name, password},
+                {position,(balance *= 1.35f), name, password},
                 history,
                 setGoals
         };
