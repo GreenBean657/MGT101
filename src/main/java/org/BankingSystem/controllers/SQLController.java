@@ -36,6 +36,7 @@ public class SQLController {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
                 float balance = rs.getFloat("balance");
+                float savingsBalance = rs.getFloat("savings");
                 String password = rs.getString("password");
                 String financialHistory = rs.getString("history");
                 String setGoals = rs.getString("setGoals");
@@ -43,7 +44,7 @@ public class SQLController {
                 String[] adjHistory = financialHistory.split("`");
                 String[] adjGoals = setGoals.split("`");
 
-                Human human = new Human(id, name, balance, password, adjHistory, adjGoals);
+                Human human = new Human(id, name, balance, savingsBalance, password, adjHistory, adjGoals);
                 humans.add(human);
             }
 
@@ -67,6 +68,7 @@ public class SQLController {
                     // Extract data from the result set
                     String name = rs.getString("name");
                     float balance = rs.getFloat("balance");
+                    float savingsBalance = rs.getFloat("savingsBalance");
                     String password = rs.getString("password");
                     String financialHistory = rs.getString("history");
                     // Ensure consistent field name (changed from "setgoals" to "setGoals")
@@ -76,7 +78,7 @@ public class SQLController {
                     String[] adjHistory = financialHistory.split("`");
                     String[] adjGoals = setGoals.split("`");
 
-                    return new Human(thisposition, name, balance, password, adjHistory, adjGoals);
+                    return new Human(thisposition, name, balance, savingsBalance, password, adjHistory, adjGoals);
                 } else {
                     System.out.println("No user found with ID: " + position);
                     return null;
@@ -96,6 +98,7 @@ public class SQLController {
         Object[][] data = human.getData();
         int position;
         float balance;
+        float savingsBalance;
         String name;
         String password;
         String[] history;
@@ -104,8 +107,9 @@ public class SQLController {
         try {
             position = (int) data[0][0];
             balance = (float) data[0][1];
-            name = (String) data[0][2];
-            password = (String) data[0][3];
+            savingsBalance = (float) data[0][2];
+            name = (String) data[0][3];
+            password = (String) data[0][4];
             history = (String[]) data[1];
             setGoals = (String[]) data[2];
         } catch (ArrayIndexOutOfBoundsException exception) {
@@ -116,6 +120,7 @@ public class SQLController {
         if (name == null || name.isEmpty()) throw new IllegalArgumentException("Name cannot be null or empty!");
         if (password == null || password.isEmpty()) throw new IllegalArgumentException("Password cannot be null or empty!");
         if (balance < 0) throw new IllegalArgumentException("Balance cannot be negative!");
+        if (savingsBalance < 0) throw new IllegalArgumentException("Savings balance cannot be negative!");
 
         if (history == null || history.length == 0) history = new String[]{"No history provided."};
         if (setGoals == null || setGoals.length == 0) setGoals = new String[]{"No set goals provided."};
@@ -138,20 +143,21 @@ public class SQLController {
         }
         String finalSetGoals = goalsBuilder.toString();
 
-        String query = "UPDATE users SET name = ?, balance = ?, password = ?, history = ?, setGoals = ? WHERE id = ?";
+        String query = "UPDATE users SET name = ?, balance = ?, savingsBalance = ?, password = ?, history = ?, setGoals = ? WHERE id = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, name);
             pstmt.setFloat(2, balance);
-            pstmt.setString(3, password);
-            pstmt.setString(4, finalHistory);
-            pstmt.setString(5, finalSetGoals);
-            pstmt.setInt(6, position);
+            pstmt.setFloat(3, savingsBalance);
+            pstmt.setString(4, password);
+            pstmt.setString(5, finalHistory);
+            pstmt.setString(6, finalSetGoals);
+            pstmt.setInt(7, position);
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected == 0) {
                 // No rows updated, might need to insert instead
-                insertNewUser(name, balance, password, finalHistory, finalSetGoals, position);
+                insertNewUser(name, balance, savingsBalance, password, finalHistory, finalSetGoals, position);
             }
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -159,17 +165,18 @@ public class SQLController {
         }
     }
 
-    public static void insertNewUser(String name, float balance, String password,
+    public static void insertNewUser(String name, float balance, float savingsBalance, String password,
                                       String history, String setGoals, int position) {
-        String query = "INSERT INTO users (id, name, balance, password, history, setGoals) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO users (id, name, balance, savingsBalance, password, history, setGoals) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, position);
             pstmt.setString(2, name);
             pstmt.setFloat(3, balance);
-            pstmt.setString(4, password);
-            pstmt.setString(5, history);
-            pstmt.setString(6, setGoals);
+            pstmt.setFloat(4, savingsBalance);
+            pstmt.setString(5, password);
+            pstmt.setString(6, history);
+            pstmt.setString(7, setGoals);
             pstmt.executeUpdate();
             System.out.println("New user inserted with ID: " + position);
         } catch (SQLException exception) {
