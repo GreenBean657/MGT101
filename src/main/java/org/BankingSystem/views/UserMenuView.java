@@ -42,22 +42,24 @@ public class UserMenuView {
             //TODO Logs them out and puts them back into the register/login screen
 
             switch (menuChoice.nextInt()) {
-                case 1:
+                case 1 -> {
 
-                    break; case 2:
+                }
 
-                        break;
-                        case 3:
-                            Scanner amtToAdd = new Scanner(System.in);
-                            assert loadedHuman != null;
-                            float balance = loadedHuman.getBalance();
-                            System.out.print("Enter the amount you want to add as a decimal: ");
-                            float newBalance = balance + amtToAdd.nextFloat();
-                            loadedHuman.setBalance(newBalance);
-                            break;
-                    default:
-                        System.out.println("Invalid choice");
-                        break;
+                case 2 -> {
+
+                }
+                case 3 -> {
+                    Scanner amtToAdd = new Scanner(System.in);
+                    assert loadedHuman != null;
+                    float balance = loadedHuman.getBalance();
+                    System.out.print("Enter the amount you want to add as a decimal: ");
+                    float newBalance = balance + amtToAdd.nextFloat();
+                    loadedHuman.setBalance(newBalance);
+                }
+                default -> {
+                    System.out.println("Invalid choice");
+                    }
             }
 
             try {
