@@ -6,16 +6,18 @@ public class Human {
     int position;
     String name;
     float balance;
+    float savingsBalance;
     String password;
     TransactionHistory[] transHistory = new TransactionHistory[5];
     String[] history;
     String[] setGoals;
 
 
-    public Human(int position, String name, float balance, String password, String[] history, String[] setGoals) {
+    public Human(int position, String name, float balance, float savingsBalance, String password, String[] history, String[] setGoals) {
         this.position = position;
         this.name = name;
         this.balance = balance;
+        this.savingsBalance = savingsBalance;
         this.password = password;
         this.history = history;
         historyTemplate();
@@ -61,5 +63,13 @@ public class Human {
 
     public void setBalance(float balance) {
         this.balance = balance;
+    }
+
+    public float getSavingsBalance() {
+        return savingsBalance;
+    }
+
+    public void setSavingsBalance(float savingsBalance) {
+        this.savingsBalance = savingsBalance;
     }
 }
