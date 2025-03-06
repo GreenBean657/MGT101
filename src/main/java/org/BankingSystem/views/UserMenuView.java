@@ -41,51 +41,32 @@ public class UserMenuView {
             //TODO Logs them out and puts them back into the register/login screen
 
             switch (menuChoice.nextInt()) {
-                case 1 -> {
+                case 1:
 
-                }
+                case 2:
 
-<<<<<<< Updated upstream
-                case 2 -> {
-
-                }
-                case 3 -> {
+                case 3:
+                    Scanner savingsOrChecking = new Scanner(System.in);
                     Scanner amtToAdd = new Scanner(System.in);
-                    assert loadedHuman != null;
-                    float balance = loadedHuman.getBalance();
-                    System.out.print("Enter the amount you want to add as a decimal: ");
-                    float newBalance = balance + amtToAdd.nextFloat();
-                    loadedHuman.setBalance(newBalance);
-                }
-                default -> {
-                    System.out.println("Invalid choice");
-                    }
-=======
-                        break;
-                        case 3:
-                            Scanner savingsOrChecking = new Scanner(System.in);
-                            Scanner amtToAdd = new Scanner(System.in);
-                            System.out.print("Enter the account you'd like to add to (checking or savings): ");
-                            switch (savingsOrChecking.nextLine()) {
-                                case "checking":
-                                    float balance = loadedHuman.getBalance();
-                                    System.out.print("Enter the amount you want to add as a decimal: ");
-                                    float newBalance = balance + amtToAdd.nextFloat();
-                                    loadedHuman.setBalance(newBalance);
-                                    break;
-                                case "savings":
-                                    float savings = loadedHuman.getSavingsBalance();
-                                    System.out.print("Enter the amount you want to add as a decimal: ");
-                                    float newSavings = savings + amtToAdd.nextFloat();
-                                    loadedHuman.setSavingsBalance(newSavings);
-                                    break;
-                            }
-
+                    System.out.print("Enter the account you'd like to add to (checking or savings): ");
+                    switch (savingsOrChecking.nextLine()) {
+                        case "checking":
+                            float balance = loadedHuman.getBalance();
+                            System.out.print("Enter the amount you want to add as a decimal: ");
+                            float newBalance = balance + amtToAdd.nextFloat();
+                            loadedHuman.setBalance(newBalance);
                             break;
-                    default:
-                        System.out.println("Invalid choice");
-                        break;
->>>>>>> Stashed changes
+                        case "savings":
+                            float savings = loadedHuman.getSavingsBalance();
+                            System.out.print("Enter the amount you want to add as a decimal: ");
+                            float newSavings = savings + amtToAdd.nextFloat();
+                            loadedHuman.setSavingsBalance(newSavings);
+                            break;
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+                    break;
             }
 
             try {

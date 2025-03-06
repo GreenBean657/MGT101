@@ -40,12 +40,14 @@ public class Human {
             transHistory[i] = new TransactionHistory("Filler","1/1/20XX", 9.99f, OTHER);
             balance = balance - transHistory[i].amount;
         }
-        for (int i = 0; i < 5; i++) {
-            if(history[i] == null) {
-                history[i] = transHistory[i].toString();
+        try {
+            for (int i = 0; i < 5; i++) {
+                if (history[i] == null) {
+                    history[i] = transHistory[i].toString();
+                }
+                System.out.println(history[i]);
             }
-            System.out.println(history[i]);
-        }
+        } catch (ArrayIndexOutOfBoundsException ignored) {}
     }
 
     public String[] getGoals() {

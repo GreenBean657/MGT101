@@ -38,7 +38,7 @@ public class UserLoginController {
 
     public void register(String username, String password) {
         users.put(username, password);
-        SQLController.insertNewUser(username, 0, password, "No history provided.", "No set goals provided.", SQLController.loadAll().length+1);
+        SQLController.insertNewUser(username, 0, 0, password, "No history provided.", "No set goals provided.", SQLController.loadAll().length+1);
 
     }
 
