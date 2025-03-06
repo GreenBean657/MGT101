@@ -40,46 +40,43 @@ public class UserMenuView {
                     "-- 4. Log Out ");
             //TODO Logs them out and puts them back into the register/login screen
 
-            switch (menuChoice.nextInt()) {
-                case 1:
-
-                case 2:
-
-                case 3:
-                    Scanner savingsOrChecking = new Scanner(System.in);
-                    Scanner amtToAdd = new Scanner(System.in);
-                    System.out.print("Enter the account you'd like to add to (checking or savings): ");
-                    switch (savingsOrChecking.nextLine()) {
-                        case "checking":
-                            float balance = loadedHuman.getBalance();
-                            System.out.print("Enter the amount you want to add as a decimal: ");
-                            float newBalance = balance + amtToAdd.nextFloat();
-                            loadedHuman.setBalance(newBalance);
-                            break;
-                        case "savings":
-                            float savings = loadedHuman.getSavingsBalance();
-                            System.out.print("Enter the amount you want to add as a decimal: ");
-                            float newSavings = savings + amtToAdd.nextFloat();
-                            loadedHuman.setSavingsBalance(newSavings);
-                            break;
-                    }
-                    break;
-                default:
-                    System.out.println("Invalid choice");
-                    break;
-            }
 
             try {
                 String line =  bReader.readLine();
                 int choice = Integer.parseInt(line);
                 switch (choice) {
+                    case (1) -> {
+                        assert loadedHuman != null;
+                        new BankInfoView().run(loadedHuman);
+                    }
+
                     case (2) -> {
                         assert loadedHuman != null;
                         UserGoalView.goalSet(loadedHuman);
                     }
-                    case (4) -> {
-                        System.out.println("Exiting program. Goodbye!");
+                    case (3) -> {
                         assert loadedHuman != null;
+                        Scanner savingsOrChecking = new Scanner(System.in);
+                        Scanner amtToAdd = new Scanner(System.in);
+                        System.out.print("Enter the account you'd like to add to (checking or savings): ");
+                        switch (savingsOrChecking.nextLine()) {
+                            case "checking":
+                                float balance = loadedHuman.getBalance();
+                                System.out.print("Enter the amount you want to add as a decimal: ");
+                                float newBalance = balance + amtToAdd.nextFloat();
+                                loadedHuman.setBalance(newBalance);
+                                break;
+                            case "savings":
+                                float savings = loadedHuman.getSavingsBalance();
+                                System.out.print("Enter the amount you want to add as a decimal: ");
+                                float newSavings = savings + amtToAdd.nextFloat();
+                                loadedHuman.setSavingsBalance(newSavings);
+                                break;
+                        }
+                    }
+                    case (4) -> {
+                        assert loadedHuman != null;
+                        System.out.println("Exiting program. Goodbye!");
                         SQLController.write(loadedHuman);
                         System.exit(0);
                     }

@@ -1,5 +1,7 @@
 package org.BankingSystem.models;
 
+import java.util.Arrays;
+
 import static org.BankingSystem.models.TypeOfTransaction.OTHER;
 
 public class Human {
@@ -51,7 +53,7 @@ public class Human {
     }
 
     public String[] getGoals() {
-        return this.setGoals;
+        return setGoals;
     }
 
     public void setGoals(String[] setGoals) {
