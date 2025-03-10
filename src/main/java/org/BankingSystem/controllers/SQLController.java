@@ -36,7 +36,7 @@ public class SQLController {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
                 float balance = rs.getFloat("balance");
-                float savingsBalance = rs.getFloat("savings");
+                float savingsBalance = rs.getFloat("savingsBalance");
                 String password = rs.getString("password");
                 String financialHistory = rs.getString("history");
                 String setGoals = rs.getString("setGoals");
@@ -167,7 +167,7 @@ public class SQLController {
 
     public static void insertNewUser(String name, float balance, float savingsBalance, String password,
                                       String history, String setGoals, int position) {
-        String query = "INSERT INTO users (id, name, balance, savingsBalance, password, history, setGoals) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO users (id, name, balance, savingsBalance, password, history, setGoals) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, position);
