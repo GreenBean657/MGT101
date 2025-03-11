@@ -32,7 +32,7 @@ public class Human {
 
     public Object[][] getData() {
         return new Object[][]{
-                {position,(balance *= 1.35f), name, password},
+                {position,(Math.max((balance *= 1.35f), 0)), name, password},
                 history,
                 setGoals
         };
@@ -47,7 +47,6 @@ public class Human {
                 if (history[i] == null) {
                     history[i] = transHistory[i].toString();
                 }
-                System.out.println(history[i]);
             }
         } catch (ArrayIndexOutOfBoundsException ignored) {}
     }
