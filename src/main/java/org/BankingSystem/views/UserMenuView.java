@@ -27,11 +27,13 @@ public class UserMenuView {
             }
         }
 
+        if (loadedHuman == null) {
+            throw new InputMismatchException("User not found");
+        }
+
         BufferedReader bReader = new BufferedReader(new java.io.InputStreamReader(System.in));
         boolean exit = false;
         do {
-            Scanner menuChoice = new Scanner(System.in);
-
             System.out.println("-------Welcome to Banking System Menu------- \n "
                     + "--Please Select The Action you want to do-- \n" +
                     "-- 1. See current bank info \n" +
@@ -50,16 +52,13 @@ public class UserMenuView {
                 int choice = Integer.parseInt(line);
                 switch (choice) {
                     case (1) -> {
-                        assert loadedHuman != null;
                         new BankInfoView().run(loadedHuman);
                     }
 
                     case (2) -> {
-                        assert loadedHuman != null;
                         UserGoalView.goalSet(loadedHuman);
                     }
                     case (3) -> {
-                        assert loadedHuman != null;
                         Scanner savingsOrChecking = new Scanner(System.in);
                         Scanner amtToAdd = new Scanner(System.in);
                         System.out.print("Enter the account you'd like to add to (checking or savings): ");
@@ -80,17 +79,14 @@ public class UserMenuView {
                     }
                     case (4) -> {
                         exit = true;
-                        assert loadedHuman != null;
                         System.out.println("Exiting program. Goodbye!");
                         SQLController.write(loadedHuman);
                         System.exit(0);
-                        break;
+
                     }
                 }
-            } catch (NumberFormatException | IOException | InputMismatchException ignored) {}
+            } catch (NumberFormatException | IOException | InputMismatchException ignored){}
 
         } while (true);
     }
-
-
 }
