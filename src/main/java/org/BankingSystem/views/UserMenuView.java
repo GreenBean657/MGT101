@@ -5,6 +5,7 @@ import org.BankingSystem.models.Human;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -27,6 +28,7 @@ public class UserMenuView {
         }
 
         BufferedReader bReader = new BufferedReader(new java.io.InputStreamReader(System.in));
+        boolean exit = false;
         do {
             Scanner menuChoice = new Scanner(System.in);
 
@@ -40,7 +42,9 @@ public class UserMenuView {
                     "-- 4. Log Out ");
             //TODO Logs them out and puts them back into the register/login screen
 
-
+            if (exit) {
+                break;
+            }
             try {
                 String line =  bReader.readLine();
                 int choice = Integer.parseInt(line);
@@ -75,13 +79,15 @@ public class UserMenuView {
                         }
                     }
                     case (4) -> {
+                        exit = true;
                         assert loadedHuman != null;
                         System.out.println("Exiting program. Goodbye!");
                         SQLController.write(loadedHuman);
                         System.exit(0);
+                        break;
                     }
                 }
-            } catch (NumberFormatException | IOException ignored) {}
+            } catch (NumberFormatException | IOException | InputMismatchException ignored) {}
 
         } while (true);
     }

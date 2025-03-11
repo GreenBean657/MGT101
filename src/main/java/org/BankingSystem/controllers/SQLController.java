@@ -107,7 +107,7 @@ public class SQLController {
         try {
             position = (int) data[0][0];
             balance = (float) data[0][1];
-            savingsBalance = (float) data[0][2];
+            savingsBalance = Float.parseFloat((String) data[0][2]);
             name = (String) data[0][3];
             password = (String) data[0][4];
             history = (String[]) data[1];
